@@ -15,9 +15,15 @@
     "express-session": "^1.17.3",
     "helmet": "^7.0.0",
     "hpp": "^0.2.3",
-    "morgan": "^1.10.0"
+    "jsonwebtoken": "^9.0.0",
+    "morgan": "^1.10.0",
+    "mysql2": "^3.3.3",
+    "sequelize": "^6.32.0",
+    "sequelize-cli": "^6.6.1"
   },
   "devDependencies": {
-    "nodemon": "^2.0.22"
+    "nodemon": "^2.0.22",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^4.6.3"
   }
 }
