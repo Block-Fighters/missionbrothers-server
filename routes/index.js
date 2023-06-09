@@ -3,9 +3,9 @@ const router = express.Router();
 
 const isLoggedIn = require("../middleware/auth");
 const loginRouter = require("./user/login");
-const registerRouter = require("./quest/register");
+const registerRouter = require("./mission/register");
 
 router.use("/user", loginRouter);
-router.use("/quest", isLoggedIn, registerRouter);
+router.use("/mission", isLoggedIn, registerRouter);
 
 module.exports = router;

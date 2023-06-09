@@ -28,8 +28,8 @@ const { User } = require("../../models");
  *       "400":
  *         description: Bad Request
  */
+
 router.post("/login/:userAddress", async (req, res) => {
-  console.log(req.params);
   const { userAddress } = req.params;
 
   try {
@@ -42,6 +42,7 @@ router.post("/login/:userAddress", async (req, res) => {
     if (!exUser) {
       await User.create({
         metamask: userAddress,
+        nickname: "김요원",
       });
     }
 

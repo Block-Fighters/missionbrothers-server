@@ -29,7 +29,7 @@ const options = {
       },
     ],
   },
-  apis: ["./routes/user/login.js", "./routes/quest/register.js"],
+  apis: ["./routes/user/login.js", "./routes/mission/register.js"],
 };
 
 const specs = swaggerJsdoc(options);
