@@ -2,20 +2,18 @@ const express = require("express");
 const { Mission, User } = require("../../models");
 const router = express.Router();
 
-require("dotenv").config();
-
 /**
  * @swagger
  * tags:
  *   name: Mission
  *   description: mission management
  * paths:
- *  /api/mission/register:
+ *  /mission/register:
  *   post:
  *     security:
  *      - bearerAuth: []
  *     tags: [Mission]
- *     summary: mission 등록
+ *     summary: 미션 등록
  *     requestBody:
  *       required: true
  *       content:
@@ -29,9 +27,11 @@ require("dotenv").config();
  *                type: string
  *              rule:
  *                type: string
- *              recruitmentPeriod:
+ *              recruitmentEnd:
  *                type: string
- *              missionPeriod:
+ *              missionStart:
+ *                type: string
+ *              missionEnd:
  *                type: string
  *              content:
  *                type: string
@@ -41,18 +41,45 @@ require("dotenv").config();
  *                type: string
  *              img:
  *                type: string
- *              contractAddress:
- *                type: string
  *     responses:
  *       "200":
- *         description: OK
- *       "400":
+ *        description: Success
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                message:
+ *                  type: object
+ *                  example: "미션을 등록했습니다."
+ *                post:
+ *                  type: object
+ *                  example: 1
+ *       "500":
  *         description: Bad Request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: object
+ *                   example: "미션 등록을 실패했습니다."
  */
-
-router.post("/register", async (req, res) => {
+router.post("/", async (req, res) => {
   try {
-    const { metamask, missionTitle, rule, recruitmentPeriod, missionPeriod, content, category, registrant, img, contractAddress } = req.body;
+    const {
+      metamask,
+      missionTitle,
+      rule,
+      recruitmentEnd,
+      missionStart,
+      missionEnd,
+      content,
+      category,
+      registrant,
+      img,
+    } = req.body;
 
     const UserInfo = await User.findOne({
       where: { metamask },
@@ -61,21 +88,22 @@ router.post("/register", async (req, res) => {
       },
     });
 
-    await Mission.create({
+    const MissionInfo = await Mission.create({
       missionTitle,
       rule,
-      recruitmentPeriod,
-      missionPeriod,
+      recruitmentEnd,
+      missionStart,
+      missionEnd,
       content,
       category,
       registrant,
       img,
-      contractAddress,
       UserId: UserInfo.id,
     });
 
     return res.status(200).json({
-      message: "미션 등록 성공!",
+      message: "미션을 등록했습니다.",
+      post: MissionInfo.id,
     });
   } catch (error) {
     return res.status(500).json({

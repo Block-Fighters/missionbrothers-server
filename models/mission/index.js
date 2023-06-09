@@ -7,22 +7,25 @@ module.exports = class Mission extends Sequelize.Model {
         missionTitle: {
           type: Sequelize.STRING(16),
           allowNull: false,
-          unique: true,
         },
         rule: {
           type: Sequelize.STRING(16),
           allowNull: false,
         },
-        recruitmentPeriod: {
+        recruitmentEnd: {
           type: Sequelize.STRING(16),
           allowNull: false,
         },
-        missionPeriod: {
+        missionStart: {
+          type: Sequelize.STRING(16),
+          allowNull: false,
+        },
+        missionEnd: {
           type: Sequelize.STRING(16),
           allowNull: false,
         },
         content: {
-          type: Sequelize.STRING(500),
+          type: Sequelize.STRING(3000),
           allowNull: false,
         },
         category: {
@@ -38,7 +41,7 @@ module.exports = class Mission extends Sequelize.Model {
           allowNull: true,
         },
         contractAddress: {
-          type: Sequelize.STRING(16),
+          type: Sequelize.STRING(42),
           allowNull: true,
         },
       },
@@ -57,5 +60,6 @@ module.exports = class Mission extends Sequelize.Model {
 
   static associate(db) {
     db.Mission.belongsTo(db.User);
+    db.Mission.hasMany(db.Certification);
   }
 };

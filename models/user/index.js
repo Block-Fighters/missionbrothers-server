@@ -12,6 +12,7 @@ module.exports = class User extends Sequelize.Model {
         nickname: {
           type: Sequelize.STRING(16),
           allowNull: true,
+          defaultValue: "김요원",
         },
       },
       {
@@ -29,5 +30,6 @@ module.exports = class User extends Sequelize.Model {
 
   static associate(db) {
     db.User.hasMany(db.Mission);
+    db.User.belongsToMany(db.Certification, { through: "Reports" }); // 신고
   }
 };

@@ -10,7 +10,7 @@ const options = {
     },
     servers: [
       {
-        url: `http://localhost:8000`,
+        url: `http://localhost:8000/api`,
       },
     ],
     components: {
@@ -29,7 +29,18 @@ const options = {
       },
     ],
   },
-  apis: ["./routes/user/login.js", "./routes/mission/register.js"],
+  apis: [
+    "./routes/user/login.js",
+    "./routes/user/modify.js",
+    "./routes/mission/register.js",
+    "./routes/mission/update.js",
+    "./routes/mission/list.js",
+    "./routes/mission/detail.js",
+    "./routes/certification/register.js",
+    "./routes/certification/list.js",
+    "./routes/certification/report.js",
+    "./routes/certification/removeReport.js",
+  ],
 };
 
 const specs = swaggerJsdoc(options);
