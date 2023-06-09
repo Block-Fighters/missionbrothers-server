@@ -1,9 +1,6 @@
 const express = require("express");
-const jwt = require("jsonwebtoken");
 const { User } = require("../../models");
 const router = express.Router();
-
-require("dotenv").config();
 
 /**
  * @swagger
@@ -11,12 +8,10 @@ require("dotenv").config();
  *   name: User
  *   description: User management
  * paths:
- *  /user/login/{userAddress}:
- *   get:
- *     security:
- *      - []
+ *  /user/modify/{userAddress}:
+ *   post:
  *     tags: [User]
- *     summary: 로그인 및 토큰 발행
+ *     summary: 사용자 정보 수정
  *     parameters:
  *      - in: path
  *        name: userAddress
@@ -24,6 +19,15 @@ require("dotenv").config();
  *          type: string
  *        required: true
  *        description: input user publickey
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              nickname:
+ *                type: string
  *     responses:
  *       "200":
  *        description: Success
@@ -34,10 +38,7 @@ require("dotenv").config();
  *              properties:
  *                message:
  *                  type: object
- *                  example: "토큰이 발급되었습니다."
- *                token:
- *                  type: object
- *                  example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiSldUIiwibWV0YW1hc2siOiIweDUwMDQ4OUEzY0MxMjRDZTNGMjExOTdiMkUxODU5RGJENTg0RDhGQTUiLCJpYXQiOjE2ODYzMzg3MzB9.OaNF38Hkd3_UEQay8uQZbA3NLyfy9BRSelvg0zNQda4"
+ *                  example: "회원 정보가 수정되었습니다."
  *       "500":
  *         description: Bad Request
  *         content:
@@ -47,40 +48,29 @@ require("dotenv").config();
  *               properties:
  *                 message:
  *                   type: object
- *                   example: "로그인을 실패했습니다."
+ *                   example: "회원 정보 수정을 실패했습니다."
  */
 
-router.get("/:userAddress", async (req, res) => {
+router.post("/:userAddress", async (req, res) => {
   const { userAddress } = req.params;
+  const { nickname } = req.body;
 
   try {
-    const exUser = await User.findOne({
-      where: {
-        metamask: userAddress,
-      },
-    });
-
-    if (!exUser) {
-      await User.create({
-        metamask: userAddress,
-      });
-    }
-
-    const token = jwt.sign(
+    await User.update(
       {
-        type: "JWT",
-        metamask: userAddress,
+        nickname,
       },
-      process.env.SECRETKEY
+      {
+        where: { metamask: userAddress },
+      }
     );
 
     return res.status(200).json({
-      message: "토큰이 발급되었습니다.",
-      token: token,
+      message: "회원 정보가 수정되었습니다.",
     });
   } catch (error) {
     return res.status(500).json({
-      message: "로그인을 실패했습니다.",
+      message: "회원 정보 수정을 실패했습니다.",
     });
   }
 });
