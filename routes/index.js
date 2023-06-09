@@ -1,8 +1,11 @@
 const express = require("express");
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  return res.json({ test: "test" });
-});
+const isLoggedIn = require("../middleware/auth");
+const loginRouter = require("./user/login");
+const registerRouter = require("./quest/register");
+
+router.use("/user", loginRouter);
+router.use("/quest", isLoggedIn, registerRouter);
 
 module.exports = router;

@@ -5,6 +5,10 @@ const dotenv = require("dotenv");
 const path = require("path");
 const hpp = require("hpp");
 const helmet = require("helmet");
+const swaggerUi = require("swagger-ui-express");
+const { specs } = require("./swagger");
+
+const { sequelize } = require("./models");
 
 dotenv.config();
 
@@ -12,6 +16,15 @@ const Router = require("./routes");
 const app = express();
 
 app.set("port", process.env.PORT || 8000);
+
+sequelize
+  .sync({ force: false })
+  .then(() => {
+    console.log("데이터베이스 연결 성공");
+  })
+  .catch((err) => {
+    console.error(err);
+  });
 
 if (process.env.NODE_ENV === "production") {
   app.use(morgan("combined"));
@@ -37,6 +50,7 @@ app.use(express.static(path.join(__dirname, "")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 app.use("/api", Router);
 
 /* 404 처리 */
