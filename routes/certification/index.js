@@ -5,10 +5,11 @@ const registerRouter = require("./register");
 const listRouter = require("./list");
 const reportRouter = require("./report");
 const removeRouter = require("./removeReport");
+const isLoggedIn = require("../../middleware/auth");
 
-router.use("/register", registerRouter);
+router.use("/register", isLoggedIn, registerRouter);
 router.use("/list", listRouter);
-router.use("/report", reportRouter);
-router.use("/remove", removeRouter);
+router.use("/report", isLoggedIn, reportRouter);
+router.use("/remove", isLoggedIn, removeRouter);
 
 module.exports = router;

@@ -11,10 +11,12 @@ const router = express.Router();
  *  /mission/list:
  *   post:
  *     security:
- *      - bearerAuth: []
+ *      - []
  *     tags: [Mission]
  *     summary: 미션 조회
  *     requestBody:
+ *       description:
+ *         start (시작 게시글 index), limit (보여질 게시글 갯수)
  *       required: true
  *       content:
  *         application/json:

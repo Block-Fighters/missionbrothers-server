@@ -11,7 +11,7 @@ const router = express.Router();
  *  /certification/list:
  *   post:
  *     security:
- *      - bearerAuth: []
+ *      - []
  *     tags: [Certification]
  *     summary: 인증 조회
  *     requestBody:
@@ -21,6 +21,8 @@ const router = express.Router();
  *          schema:
  *            type: object
  *            properties:
+ *              metamask:
+ *                type: string
  *              missionId:
  *                type: number
  *              start:
@@ -47,6 +49,9 @@ const router = express.Router();
  *                                   "reporters": 0
  *                              }
  *                            ]
+ *                hasReported:
+ *                  type: boolean
+ *                  example: true
  *       "500":
  *         description: Bad Request
  *         content:
@@ -61,7 +66,7 @@ const router = express.Router();
 
 router.post("/", async (req, res) => {
   try {
-    const { missionId, start, limit } = req.body;
+    const { metamask, missionId, start, limit } = req.body;
 
     const posts = await Certification.findAll({
       order: [["id", "DESC"]],
@@ -80,6 +85,11 @@ router.post("/", async (req, res) => {
       where: { MissionId: missionId },
     });
 
+    // 해당 글을 신고했는지 여부
+    const hasMetamask = posts.some((post) =>
+      post.reporters.some((reporter) => reporter.metamask === metamask)
+    );
+
     // "reporters" 배열의 길이로 변환
     const postData = posts.map((post) => ({
       ...post.toJSON(),
@@ -89,6 +99,7 @@ router.post("/", async (req, res) => {
     return res.status(200).json({
       message: "인증 목록을 조회 했습니다.",
       postData: postData,
+      hasReported: hasMetamask,
     });
   } catch (error) {
     return res.status(500).json({
