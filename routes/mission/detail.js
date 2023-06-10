@@ -11,7 +11,7 @@ const router = express.Router();
  *  /mission/detail/{id}:
  *   get:
  *     security:
- *      - bearerAuth: []
+ *      - []
  *     tags: [Mission]
  *     summary: 미션 상세 조회
  *     parameters:

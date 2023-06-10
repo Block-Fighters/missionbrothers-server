@@ -5,23 +5,23 @@ module.exports = class Mission extends Sequelize.Model {
     return super.init(
       {
         missionTitle: {
-          type: Sequelize.STRING(16),
+          type: Sequelize.STRING(42),
           allowNull: false,
         },
         rule: {
-          type: Sequelize.STRING(16),
+          type: Sequelize.STRING(3000),
           allowNull: false,
         },
         recruitmentEnd: {
-          type: Sequelize.STRING(16),
+          type: Sequelize.STRING(42),
           allowNull: false,
         },
         missionStart: {
-          type: Sequelize.STRING(16),
+          type: Sequelize.STRING(42),
           allowNull: false,
         },
         missionEnd: {
-          type: Sequelize.STRING(16),
+          type: Sequelize.STRING(42),
           allowNull: false,
         },
         content: {
@@ -29,11 +29,11 @@ module.exports = class Mission extends Sequelize.Model {
           allowNull: false,
         },
         category: {
-          type: Sequelize.STRING(16),
+          type: Sequelize.STRING(42),
           allowNull: false,
         },
         registrant: {
-          type: Sequelize.STRING(16),
+          type: Sequelize.STRING(42),
           allowNull: false,
         },
         img: {
